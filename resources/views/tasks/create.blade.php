@@ -7,6 +7,7 @@
     <div class="row">
         <div class="col-6">
             {!! Form::model($task, ['route' => 'tasks.store']) !!}
+            {{-- 第一引数modelインスタンス、第二引数ルーティング --}}
                 
                 <div class="form-group">
                     {!! Form::label('title', 'タイトル:') !!}

@@ -8,7 +8,7 @@ use App\User; // 追加
 
 class UsersController extends Controller
 {
-    public function index()
+    public function index()//ユーザー一覧表示
     {
         $users = User::orderBy('id', 'desc')->paginate(10);
 
@@ -17,7 +17,7 @@ class UsersController extends Controller
         ]);
     }
     
-        public function show($id)
+        public function show($id)//ユーザー詳細画面
     {
         $user = User::find($id);
 

@@ -19,9 +19,11 @@ class TasksController extends Controller
     {
         $tasks = Task::all();
         
-        return view('tasks.index',[
-            'tasks' => $tasks,
-            ]);
+        // return view('tasks.index',[
+        //     'tasks' => $tasks,
+        //     ]);
+            
+        return view('welcome',['tasks'=>$tasks]);
     }
 
     /**
@@ -60,6 +62,7 @@ class TasksController extends Controller
         $task->title = $request->title;
         $task->content = $request->content;
         $task->status = $request->status;
+        $task->user_id = $request->user()->id;
         $task->save();
         
         return redirect('/');
