@@ -17,13 +17,20 @@ class TasksController extends Controller
      // getでmessages/にアクセスされた場合の「一覧表示処理」
     public function index()
     {
-        $tasks = Task::all();
-        
-        // return view('tasks.index',[
-        //     'tasks' => $tasks,
-        //     ]);
+        $data = [];
+        if(\Auth::check()){
+            $user = \Auth::user();
+            //ログイン済みのユーザーを代入
+            $tasks = $user->tasklists()->orderBy('created_at','desc')->paginate(10);
+            //「ユーザが持ってるタスクリスト」を最新順で取ってきて$tasksに入れる
             
-        return view('welcome',['tasks'=>$tasks]);
+            $data = [
+                'user' => $user,
+                'tasks'=>$tasks,
+                ];
+        }
+            
+        return view('welcome',$data);
     }
 
     /**
@@ -64,8 +71,9 @@ class TasksController extends Controller
         $task->status = $request->status;
         $task->user_id = $request->user()->id;
         $task->save();
+      
         
-        return redirect('/');
+        return back();
     }
 
     /**
@@ -80,9 +88,17 @@ class TasksController extends Controller
     {
         $task = Task::find($id);
         
-        return view('tasks.show',[
+        if($task->user_id == \Auth::id())
+        //詳細ページのタスクのゆーざーidとログインしているユーザのidの一致を判定
+        {
+              return view('tasks.show',[
             'task' => $task,
             ]);
+        }else{
+            return redirect('/');
+        }
+        
+      
     }
 
     /**
